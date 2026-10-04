@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f5f7fb">
+  <title>Huecraft — Color Palette Generator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Huecraft home">
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span>huecraft</span>
+      </a>
+      <nav class="top-nav" aria-label="Primary navigation">
+        <a class="active" href="#generator">Generator</a>
+        <a href="#explore">Explore</a>
+        <a href="#saved">Saved</a>
+        <a href="#learn">About</a>
+      </nav>
+      <div class="top-actions">
+        <button class="menu-button" id="menuButton" type="button" aria-label="Open navigation">☰</button>
+        <button class="icon-button" id="themeToggle" type="button" aria-label="Toggle dark mode" title="Toggle theme">◐</button>
+        <div class="profile-wrap">
+          <button class="avatar" id="profileButton" type="button" aria-label="Open profile menu" aria-expanded="false">SC</button>
+          <div class="profile-popover" id="profilePopover" aria-label="Profile menu">
+            <div class="profile-header">
+              <div class="profile-avatar" id="profileAvatar">SC</div>
+              <div>
+                <strong id="profileName">Sarthak Creator</strong>
+                <small id="profileEmail">hello@huecraft.design</small>
+              </div>
+              <button class="close-profile" id="closeProfile" type="button" aria-label="Close profile menu">×</button>
+            </div>
+            <div class="profile-stats">
+              <div><strong id="savedCount">0</strong><span>Saved</span></div>
+              <div><strong id="generatedCount">0</strong><span>Created</span></div>
+              <div><strong>4</strong><span>Moods</span></div>
+            </div>
+            <button class="profile-menu-item" id="editProfileButton" type="button"><span>✎</span><span><b>Edit profile</b><small>Update your display details</small></span><i>→</i></button>
+            <button class="profile-menu-item" id="savedPalettesButton" type="button"><span>♡</span><span><b>Saved palettes</b><small>Open your collection</small></span><i>→</i></button>
+            <div class="profile-divider"></div>
+            <button class="profile-menu-item compact" id="signOutButton" type="button"><span>↪</span><span><b>Sign out</b></span></button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main id="generator">
+      <section class="hero">
+        <div class="eyebrow"><span class="pulse"></span> Design with intention</div>
+        <h1>Find the <em>feeling.</em></h1>
+        <p>Curate beautiful color combinations for your next project, one shade at a time.</p>
+      </section>
+
+      <section class="generator-card" aria-label="Color palette generator">
+        <div class="generator-toolbar">
+          <div>
+            <span class="label">Palette mood</span>
+            <button class="mood-select" id="moodSelect" type="button" aria-haspopup="listbox" aria-expanded="false">
+              <span id="moodValue">Creative &amp; calm</span>
+              <span class="chevron">⌄</span>
+            </button>
+            <div class="mood-menu" id="moodMenu" role="listbox" aria-label="Choose a palette mood">
+              <button type="button" role="option" data-mood="Creative & calm">Creative &amp; calm</button>
+              <button type="button" role="option" data-mood="Warm & optimistic">Warm &amp; optimistic</button>
+              <button type="button" role="option" data-mood="Focused & bold">Focused &amp; bold</button>
+              <button type="button" role="option" data-mood="Earthy & grounded">Earthy &amp; grounded</button>
+            </div>
+          </div>
+          <div class="toolbar-actions">
+            <label class="compact-control">Colors
+              <select id="colorCount">
+                <option>3</option><option>4</option><option selected>5</option><option>6</option><option>7</option>
+              </select>
+            </label>
+            <label class="compact-control">Harmony
+              <select id="harmonySelect">
+                <option value="random">Random</option><option value="monochromatic">Monochromatic</option>
+                <option value="analogous">Analogous</option><option value="complementary">Complementary</option>
+                <option value="triadic">Triadic</option><option value="split">Split complementary</option>
+                <option value="tetradic">Tetradic</option><option value="pastel">Pastel</option>
+                <option value="neon">Neon</option><option value="dark">Dark</option><option value="light">Light</option>
+              </select>
+            </label>
+            <button class="text-button" id="saveButton" type="button"><span>♡</span> Save palette</button>
+            <button class="text-button picker-trigger" id="pickerButton" type="button"><span>◉</span> Color picker</button>
+            <button class="primary-button" id="generateButton" type="button"><span>✦</span> Generate</button>
+          </div>
+        </div>
+
+        <div class="palette" id="palette" aria-live="polite"></div>
+
+        <div class="palette-footer">
+          <button class="shuffle-button" id="shuffleButton" type="button"><span>⤨</span> Press spacebar to generate</button>
+          <div class="palette-actions">
+            <button class="export-button" id="copyAllButton" type="button">Copy all</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="quick-controls">
+        <div class="control-heading">
+          <span class="label">Quick controls</span>
+          <span class="shortcut">Spacebar <kbd>Space</kbd></span>
+        </div>
+        <div class="control-grid">
+          <button class="control-card" type="button" data-control="random">
+            <span class="control-icon dice">⚄</span><span><strong>Surprise me</strong><small>Generate something new</small></span><span class="control-arrow">↗</span>
+          </button>
+          <button class="control-card" type="button" data-control="monochrome">
+            <span class="control-icon mono">◒</span><span><strong>Monochromatic</strong><small>Explore one hue</small></span><span class="control-arrow">↗</span>
+          </button>
+          <button class="control-card" type="button" data-control="contrast">
+            <span class="control-icon contrast">◑</span><span><strong>High contrast</strong><small>Make it pop</small></span><span class="control-arrow">↗</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="collection-section" id="saved">
+        <div class="section-heading">
+          <div><span class="label">Your workspace</span><h2>My collection</h2></div>
+          <button class="clear-button" id="clearCollectionButton" type="button">Clear all</button>
+        </div>
+        <div class="collection-grid" id="collectionGrid">
+          <div class="empty-collection" id="emptyCollection">Save a palette to start building your collection.</div>
+        </div>
+        <div class="history-wrap">
+          <span class="label">Recent generations</span>
+          <div class="history-row" id="historyRow"></div>
+        </div>
+      </section>
+
+      <section class="tool-section" id="explore">
+        <div class="section-heading"><div><span class="label">Build with color</span><h2>Color lab</h2></div></div>
+        <div class="lab-grid">
+          <article class="lab-card">
+            <div class="section-heading compact-heading"><div><span class="label">Live preview</span><h3 id="previewTitle">Website</h3></div>
+              <select id="previewMode" aria-label="Preview mode"><option>Website</option><option>Dashboard</option><option>Mobile App</option><option>Landing Page</option></select>
+            </div>
+            <div class="ui-preview" id="uiPreview">
+              <nav><b>studio</b><span>Work</span><span>About</span><button>Start a project</button></nav>
+              <div class="preview-hero"><span class="preview-badge">NEW COLLECTION</span><h3>Make room for better ideas.</h3><p>A small preview that adapts to your palette.</p><button>Explore now</button></div>
+              <div class="preview-card"><span></span><div><b>Thoughtful details</b><small>Designed for clarity and focus.</small></div></div>
+              <input placeholder="Your email address" aria-label="Preview email input">
+              <footer>Built with intention.</footer>
+            </div>
+          </article>
+          <article class="lab-card">
+            <span class="label">Gradient generator</span><h3>Blend your colors</h3>
+            <div class="gradient-preview" id="gradientPreview"></div>
+            <div class="form-row"><label>Type<select id="gradientType"><option>Linear</option><option>Radial</option></select></label><label>Angle <output id="angleValue">90°</output><input id="gradientAngle" type="range" min="0" max="360" value="90"></label></div>
+            <div class="stop-row"><label>Color 1<input id="gradientColor1" type="color"></label><label>Color 2<input id="gradientColor2" type="color"></label><label>Color 3<input id="gradientColor3" type="color"></label></div>
+            <code id="gradientCode"></code><button class="export-button" id="copyGradientButton" type="button">Copy CSS</button>
+          </article>
+        </div>
+        <div class="lab-grid">
+          <article class="lab-card">
+            <span class="label">Accessibility</span><h3>Contrast checker</h3>
+            <div class="contrast-controls"><label>Background<input id="contrastBackground" type="color"></label><label>Text<input id="contrastText" type="color"></label></div>
+            <div class="contrast-result" id="contrastResult"></div>
+          </article>
+          <article class="lab-card">
+            <span class="label">Color information</span><h3 id="colorInfoName">Selected color</h3>
+            <div class="color-info" id="colorInfo"></div>
+            <label>Vision preview<select id="visionMode"><option value="normal">Normal vision</option><option value="protanopia">Protanopia</option><option value="deuteranopia">Deuteranopia</option><option value="tritanopia">Tritanopia</option><option value="grayscale">Grayscale</option></select></label>
+            <div class="vision-swatches" id="visionSwatches"></div>
+          </article>
+        </div>
+        <div class="lab-grid">
+          <article class="lab-card">
+            <span class="label">Local image analysis</span><h3>Image to palette</h3>
+            <input id="imageInput" type="file" accept="image/*">
+            <canvas id="imageCanvas" hidden></canvas><img id="imagePreview" alt="Uploaded image preview" hidden>
+            <div class="extracted-swatches" id="extractedSwatches"></div>
+            <button class="primary-button" id="useExtractedButton" type="button" disabled>Use this palette</button>
+          </article>
+          <article class="lab-card">
+            <span class="label">Export</span><h3>Take it with you</h3>
+            <div class="export-grid"><button class="export-button" id="copyHexButton" type="button">Copy HEX</button><button class="export-button" id="copyCssButton" type="button">Copy CSS variables</button><button class="export-button" id="copyJsonButton" type="button">Copy JSON</button><button class="export-button" id="downloadPngButton" type="button">Download PNG</button><button class="export-button" id="downloadSvgButton" type="button">Download SVG</button></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="inspiration" id="collections">
+        <div class="section-heading">
+          <div><span class="label">From the community</span><h2>Color inspiration</h2></div>
+          <a href="#collections">View all <span>→</span></a>
+        </div>
+        <div class="inspiration-grid">
+          <article class="inspiration-card">
+            <div class="mini-palette"><span style="background:#f4ead5"></span><span style="background:#c5d4c4"></span><span style="background:#819b8a"></span><span style="background:#45624e"></span></div>
+            <div class="inspiration-meta"><span>Quiet morning</span><small>by <b>mira</b></small><button type="button" aria-label="Like Quiet morning">♡</button></div>
+          </article>
+          <article class="inspiration-card">
+            <div class="mini-palette"><span style="background:#f6bd60"></span><span style="background:#f28482"></span><span style="background:#84a59d"></span><span style="background:#3d405b"></span></div>
+            <div class="inspiration-meta"><span>Sunset radio</span><small>by <b>noah</b></small><button type="button" aria-label="Like Sunset radio">♡</button></div>
+          </article>
+          <article class="inspiration-card">
+            <div class="mini-palette"><span style="background:#d8e2dc"></span><span style="background:#ffe5d9"></span><span style="background:#ffcad4"></span><span style="background:#9d8189"></span></div>
+            <div class="inspiration-meta"><span>Soft landing</span><small>by <b>jules</b></small><button type="button" aria-label="Like Soft landing">♡</button></div>
+          </article>
+        </div>
+      </section>
+      <div class="search-row">
+      <div class="search-wrap">
+        <button class="search-button" id="searchButton" type="button" aria-label="Search palettes" aria-expanded="false">
+          <span class="search-icon" aria-hidden="true"></span>
+          <span>Search</span>
+        </button>
+        <div class="search-popover" id="searchPopover">
+          <label for="searchInput">Find a palette</label>
+          <input id="searchInput" type="search" placeholder="Search name or HEX color" autocomplete="off">
+          <small class="search-status" id="searchStatus" aria-live="polite"></small>
+        </div>
+      </div>
+    </div>
+    </main>
+    <footer id="learn">
+      <span>Made for the curious.</span>
+      <span>© 2024 Huecraft</span>
+      <span>Developed by Sarthak Dhabale</span>
+      <span>Built with good taste <span class="footer-heart">♥</span></span>
+    </footer>
+  </div>
+  <div class="toast" id="toast" role="status"></div>
+  <div class="color-picker-popover" id="colorPickerPopover" aria-label="Color picker">
+    <div class="picker-heading">
+      <div><span class="label">Custom color</span><strong>Pick your shade</strong></div>
+      <button class="close-picker" id="closePicker" type="button" aria-label="Close color picker">×</button>
+    </div>
+    <div class="picker-preview" id="pickerPreview"></div>
+    <div class="picker-fields">
+      <label class="native-color-field" aria-label="Choose a color">
+        <input id="nativeColorPicker" type="color" value="#7A9E9F">
+        <span>Choose color</span>
+      </label>
+      <label class="hex-field">
+        <span>HEX</span>
+        <input id="hexColorInput" type="text" value="#7A9E9F" maxlength="7" spellcheck="false" aria-label="HEX color value">
+      </label>
+    </div>
+    <div class="picker-apply">
+      <label for="pickerTarget">Apply to</label>
+      <select id="pickerTarget" aria-label="Choose palette color to update">
+        <option value="0">Sage</option>
+        <option value="1">Mist</option>
+        <option value="2">Tide</option>
+        <option value="3">Forest</option>
+        <option value="4">Linen</option>
+      </select>
+      <button class="primary-button" id="applyColorButton" type="button">Apply color</button>
+    </div>
+  </div>
+  <div class="modal-backdrop" id="profileModalBackdrop">
+    <form class="profile-modal" id="profileForm">
+      <button class="modal-close" id="closeProfileModal" type="button" aria-label="Close edit profile">×</button>
+      <span class="label">Your profile</span>
+      <h2>Make it yours.</h2>
+      <p>Personalize the details shown in your Huecraft workspace.</p>
+      <label for="nameInput">Display name</label>
+      <input id="nameInput" type="text" maxlength="32" value="Sarthak Creator" required>
+      <label for="emailInput">Email address</label>
+      <input id="emailInput" type="email" value="hello@huecraft.design" required>
+      <div class="modal-actions">
+        <button class="text-button" id="cancelProfile" type="button">Cancel</button>
+        <button class="primary-button" type="submit">Save changes</button>
+      </div>
+    </form>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
